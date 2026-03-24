@@ -1,5 +1,27 @@
+import cv2
+from src.exercises.squat_detector import SquatDetector
+
+
 def main():
-    print("Hello from workout-analytics!")
+    
+    cap = cv2.VideoCapture("videos/input/video-1.mp4")  # adicionar caminho do vídeo aqui
+
+    detector = SquatDetector()
+
+    while True:
+        ret, frame = cap.read()
+
+
+        frame = detector.detectar(frame)
+
+        list_points = detector.encontrar_points(frame)
+        print(list_points)
+
+        cv2.imshow('Squat Detector', frame) 
+
+        cv2.waitKey(1)
+
+
 
 
 if __name__ == "__main__":

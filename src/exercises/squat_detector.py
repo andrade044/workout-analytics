@@ -18,7 +18,8 @@ class SquatDetector:
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(static_image_mode=self.modo,
                                     min_detection_confidence=self.detector_conf,
-                                    min_tracking_confidence=self.rastreio_conf, model_complexity=1)     
+                                    min_tracking_confidence=self.rastreio_conf, model_complexity=1,
+                                    smooth_landmarks=True)     
 
 
 
