@@ -4,17 +4,16 @@ from src.exercises.squat_detector import SquatDetector
 
 def main():
     
-    cap = cv2.VideoCapture("videos/input/video-1.mp4")  # adicionar caminho do vídeo aqui
+    cap = cv2.VideoCapture("videos/input/video-1.mp4") 
 
     detector = SquatDetector()
 
     while True:
         ret, frame = cap.read()
 
-
         frame = detector.detectar(frame)
 
-        list_points = detector.encontrar_points(frame)
+        list_points = detector.find_points(frame)
         print(list_points)
 
         cv2.imshow('Squat Detector', frame) 
