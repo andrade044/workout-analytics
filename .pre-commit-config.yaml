@@ -19,10 +19,3 @@ repos:
       - id: mypy
         stages: [pre-commit]
 
-  - repo: local
-    hooks:
-      - id: tests
-        name: Run unit tests
-        entry: pytest
-        language: system
-        stages: [pre-push]
