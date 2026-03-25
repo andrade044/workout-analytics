@@ -11,7 +11,7 @@ def main():
     while True:
         ret, frame = cap.read()
 
-        frame = detector.detectar(frame)
+        frame = detector.detect(frame)
 
         list_points = detector.find_points(frame)
         print(list_points)

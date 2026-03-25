@@ -3,21 +3,19 @@ import mediapipe as mp
 
 
 class SquatDetector:
-    def __init__(self, modo=False, detector_conf=0.5,
+    def __init__(self, detector_conf=0.5,
                  traking_conf=0.5, color_points=(0,0,255,), color_conections=(255,255,255)
                  ):
 
-        self.modo=modo
         self.detector_conf=detector_conf
-        self.traking_conf=traking_conf
+        self.tracking_conf=traking_conf
         self.color_points=color_points
         self.color_conections=color_conections
         
         
 
         self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(static_image_mode=self.modo,
-                                    min_detection_confidence=self.detector_conf,
+        self.pose = self.mp_pose.Pose(min_detection_confidence=self.detector_conf,
                                     min_tracking_confidence=self.tracking_conf, model_complexity=1,
                                     smooth_landmarks=True)     
 
