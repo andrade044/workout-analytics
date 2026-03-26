@@ -21,7 +21,7 @@ def main() -> None:
         frame = detector.detect(frame)
 
         list_points = detector.find_points(frame)
-        print(list_points)
+        detector.count_squats(list_points, frame)
 
         cv2.imshow("Squat Detector", frame)
 
