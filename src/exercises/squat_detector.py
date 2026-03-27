@@ -106,13 +106,54 @@ class SquatDetector:
 
         return list_points
 
-    def count_squats(self, list_points: list, frame: cv2.Mat) -> int:
+    def calculate_angle(self, a: list, b: list, c: list) -> float:
+        """Calculate the angle between three points.
+
+        Args:
+        ----
+            a (list): The first point in the format [id, x, y]
+            b (list): The second point in the format [id, x, y]
+            c (list): The third point in the format [id, x, y]
+
+        Returns:
+        -------
+            float: The angle between the three points
+
+        """
+        hip_x, hip_y = a[1], a[2]
+        knee_x, knee_y = b[1], b[2]
+        ankle_x, ankle_y = c[1], c[2]
+
+        # vectors
+        ba = [hip_x - knee_x, hip_y - knee_y]
+        bc = [ankle_x - knee_x, ankle_y - knee_y]
+
+        # dot product
+        dot_product = ba[0] * bc[0] + ba[1] * bc[1]
+
+        # magnitude of vectors
+        mag_ba = math.hypot(ba[0], ba[1])
+        mag_bc = math.hypot(bc[0], bc[1])
+
+        if mag_ba == 0 or mag_bc == 0:
+            return 0
+
+        # angle calculation
+        angle = math.degrees(math.acos(dot_product / (mag_ba * mag_bc)))
+
+        return angle
+
+    def count_squats(
+        self, list_points: list, frame: cv2.Mat, down_angle: int = 80, up_angle: int = 160
+    ) -> int:
         """Count the number of squats in the given list of pose landmarks.
 
         Args:
         ----
             list_points (list): A list of the pose landmarks in the format [id, x, y]
             frame (cv2.Mat): The frame to draw the squat count on
+            down_angle (int, optional): Angle threshold for the squat down position. Defaults to 80
+            up_angle (int, optional): The angle threshold for the squat up position. Defaults to 160
 
         Returns:
         -------
@@ -120,22 +161,20 @@ class SquatDetector:
 
         """
         if list_points:
-            left_hip = list_points[23]
-            left_knee = list_points[25]
+            LEFT_HIP_IDX = 23
+            LEFT_KNEE_IDX = 25
+            LEFT_ANKLE_IDX = 27
 
-            distance_left = math.hypot(left_hip[1] - left_knee[1], left_hip[2] - left_knee[2])
+            left_hip = list_points[LEFT_HIP_IDX]
+            left_knee = list_points[LEFT_KNEE_IDX]
+            left_ankle = list_points[LEFT_ANKLE_IDX]
 
-            """ relevant points:
-            23 - left hip
-            24 - right hip
-            25 - left knee
-            26 - right knee
-            ideal distance 85
-            """
-            if self.check and distance_left <= 85:
+            angle = self.calculate_angle(left_hip, left_knee, left_ankle)
+
+            if self.check and angle <= down_angle:
                 self.counter += 1
                 self.check = False
-            if distance_left >= 85:
+            if angle >= up_angle:
                 self.check = True
 
             cv2.putText(

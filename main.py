@@ -11,7 +11,7 @@ def main() -> None:
         None
 
     """
-    cap = cv2.VideoCapture("videos/input/video-1.mp4")
+    cap = cv2.VideoCapture("videos/input/video-3.mp4")
 
     detector = SquatDetector()
 
