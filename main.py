@@ -11,7 +11,7 @@ def main() -> None:
         None
 
     """
-    cap = cv2.VideoCapture("videos/input/video-1.mp4")
+    cap = cv2.VideoCapture("videos/input/video-3.mp4")
 
     detector = SquatDetector()
 
@@ -21,7 +21,7 @@ def main() -> None:
         frame = detector.detect(frame)
 
         list_points = detector.find_points(frame)
-        print(list_points)
+        detector.count_squats(list_points, frame)
 
         cv2.imshow("Squat Detector", frame)
 
