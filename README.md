@@ -92,7 +92,7 @@ python main.py
 ## 🎥 Demo
 
 <p align="center">
-  <img src="assets/demo.gif" width="500"/>
+  <img src="src/exercises/assets/demo.gif" width="500"/>
 </p>
 
 ---
